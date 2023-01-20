@@ -15,25 +15,27 @@ def make_coordinates(image, line_parameters):
 def average_slope_intercept(image, lines):
     left_fit = []
     right_fit = []
-    for line in lines:
-        x1, y1, x2, y2 = line.reshape(4)
-        parameters = np.polyfit((x1, x2), (y1, y2), 1)
-        slope = parameters[0]
-        intercept = parameters[1]
-        if slope < 0:
-            left_fit.append((slope, intercept))
-        else:
-            right_fit.append((slope, intercept))
+    if lines is not None:
+        for line in lines:
+            x1, y1, x2, y2 = line.reshape(4)
+            parameters = np.polyfit((x1, x2), (y1, y2), 1)
+            slope = parameters[0]
+            intercept = parameters[1]
+            if slope < 0:
+                left_fit.append((slope, intercept))
+            else:
+                right_fit.append((slope, intercept))
     left_fit_average = np.average(left_fit, axis=0)
     right_fit_average = np.average(right_fit, axis=0)
+    print(left_fit_average, "left")
+    print(right_fit_average, "right")
     left_line = make_coordinates(image, left_fit_average)
     right_line = make_coordinates(image, right_fit_average)
     return np.array([left_line, right_line])
 
 
-# cam = cv2.VideoCapture("http://192.168.219.105:8080/video")
 def canny(image):
-    gray = cv2.cvtColor(lane_image, cv2.COLOR_RGB2GRAY)  # RGB값을 조정해 회색으로 만듦
+    gray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)  # RGB값을 조정해 회색으로 만듦
     blur = cv2.GaussianBlur(gray, (5, 5), 0)  # 5x5 커널을 활용해 가우시안 블러처리
     canny = cv2.Canny(blur, 50, 150)  # canny함수로 변형, RGB 값의 변화가 급격하게 생기는 부분만 나타냄
     return canny
@@ -50,7 +52,7 @@ def display_lines(image, lines):
 def region_of_interest(image):
     height = image.shape[0]  # y축 높이가 0이됨을 뜻함
     polygons = np.array(  # polygon:3D 객체를 이루는 여러개의 삼각형 입자를 말하는 것
-        [[(500, height), (1300, height), (850, 400)]]
+        [[(0, height), (950, height), (480, 350)]]
     )  # 삼각형의 공간을 x,y좌표계를 polygon 중 하나로 임의로 지정한 뒤 가져온다.
     mask = np.zeros_like(
         image
@@ -64,12 +66,14 @@ def region_of_interest(image):
     return masked_image
 
 
-while 1:
+cam = cv2.VideoCapture("test.mp4")
 
-    # _, frame = cam.read()
-    image = cv2.imread("road_test.jpg")  # 이미지를 가져옴
-    lane_image = np.copy(image)  # 원본 이미지에 영향을 주지 않기 위해 copy 사용
-    canny_image = canny(lane_image)
+while cam.isOpened():
+
+    _, frame = cam.read()
+    # image = cv2.imread("road_test.jpg")  # 이미지를 가져옴
+    # lane_image = np.copy(image)  # 원본 이미지에 영향을 주지 않기 위해 copy 사용
+    canny_image = canny(frame)
     cropped_image = region_of_interest(canny_image)
     lines = cv2.HoughLinesP(
         cropped_image,
@@ -80,10 +84,11 @@ while 1:
         minLineLength=40,
         maxLineGap=5,
     )
-    averaged_lines = average_slope_intercept(lane_image, lines)
-    line_image = display_lines(lane_image, averaged_lines)
-    combo_image = cv2.addWeighted(lane_image, 0.8, line_image, 1, 1)
+    averaged_lines = average_slope_intercept(frame, lines)
+    line_image = display_lines(frame, averaged_lines)
+    combo_image = cv2.addWeighted(frame, 0.8, line_image, 1, 1)
     cv2.imshow("result", combo_image)  # 이미지 보여줌
-    cv2.waitKey(0)
-    if cv2.waitKey(1) == ord("q"):
-        break  # q키 누르기 전까지 이미지 imshow
+    if cv2.waitKey(1) & 0xFF == ord("q"):
+        break
+cam.release()
+cv2.destroyAllWindows
