@@ -4,9 +4,12 @@ import matplotlib.pyplot as plt
 
 
 def make_coordinates(image, line_parameters):
-    slope, intercept = line_parameters
-    y1 = image.shape[0]
-    y2 = int(y1 * (3 / 5))
+    try:
+        slope, intercept = line_parameters
+    except TypeError:
+        slope, intercept = 0.001, 0
+    y1 = image.shape[0]  # y축 맨 밑에서 시작
+    y2 = int(y1 * (3 / 5))  # 바닦지점으로 부터 전체의 3/5지점까지가 경계
     x1 = int((y1 - intercept) / slope)
     x2 = int((y2 - intercept) / slope)
     return np.array([x1, y1, x2, y2])
@@ -15,20 +18,17 @@ def make_coordinates(image, line_parameters):
 def average_slope_intercept(image, lines):
     left_fit = []
     right_fit = []
-    if lines is not None:
-        for line in lines:
-            x1, y1, x2, y2 = line.reshape(4)
-            parameters = np.polyfit((x1, x2), (y1, y2), 1)
-            slope = parameters[0]
-            intercept = parameters[1]
-            if slope < 0:
-                left_fit.append((slope, intercept))
-            else:
-                right_fit.append((slope, intercept))
+    for line in lines:
+        x1, y1, x2, y2 = line.reshape(4)
+        parameters = np.polyfit((x1, x2), (y1, y2), 1)
+        slope = parameters[0]
+        intercept = parameters[1]
+        if slope < 0:
+            left_fit.append((slope, intercept))
+        else:
+            right_fit.append((slope, intercept))
     left_fit_average = np.average(left_fit, axis=0)
     right_fit_average = np.average(right_fit, axis=0)
-    print(left_fit_average, "left")
-    print(right_fit_average, "right")
     left_line = make_coordinates(image, left_fit_average)
     right_line = make_coordinates(image, right_fit_average)
     return np.array([left_line, right_line])
@@ -88,7 +88,7 @@ while cam.isOpened():
     line_image = display_lines(frame, averaged_lines)
     combo_image = cv2.addWeighted(frame, 0.8, line_image, 1, 1)
     cv2.imshow("result", combo_image)  # 이미지 보여줌
-    if cv2.waitKey(1) & 0xFF == ord("q"):
+    if cv2.waitKey(30) & 0xFF == ord("q"):
         break
 cam.release()
 cv2.destroyAllWindows
