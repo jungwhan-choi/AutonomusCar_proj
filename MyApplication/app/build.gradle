@@ -25,6 +25,9 @@ android {
         }
         python{
             buildPython "C:/Users/zad34/AppData/Local/Programs/Python/Python38python.exe"
+            pip{
+                install
+            }
         }
     }
 
