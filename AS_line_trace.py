@@ -13,7 +13,7 @@ def main():
     def region_of_interest(image):
         height = image.shape[0]  # y축 높이가 0이됨을 뜻함
         polygons = np.array(  # polygon:3D 객체를 이루는 여러개의 삼각형 입자를 말하는 것
-            [[(0, height), (950, height), (480, 350)]]
+        [[(0, height), (950, height), (480, 350)]]
         )  # 삼각형의 공간을 x,y좌표계를 polygon 중 하나로 임의로 지정한 뒤 가져온다.
         mask = np.zeros_like(
             image
@@ -62,7 +62,7 @@ def main():
             for x1, y1, x2, y2 in lines:
                 cv2.line(line_image, (x1, y1), (x2, y2), (255, 0, 0), 10)
         return line_image
-
+        
     cam = cv2.VideoCapture(0)
 
 

@@ -21,8 +21,8 @@ public class MainActivity extends AppCompatActivity {
             Python.start(new AndroidPlatform(this));
         }
         final Python py=Python.getInstance();
-        PyObject pyobj=py.getModule("script");
-        PyObject obj=pyobj.callAttr("hello");
+        PyObject pyobj=py.getModule("line_trace");
+        PyObject obj=pyobj.callAttr("main");
         tv.setText(obj.toString());
     }
 }
