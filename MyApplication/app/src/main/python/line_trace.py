@@ -63,14 +63,14 @@ def main():
                 cv2.line(line_image, (x1, y1), (x2, y2), (255, 0, 0), 10)
         return line_image
 
-    cam = cv2.VideoCapture(0)
+    frame1 = cv2.imread("road_test.jpg")
 
 
-    while cam.isOpened():
+    while 1:
 
-        _, frame = cam.read()
+        #frame1 = cam.read()
         # image = cv2.imread("road_test.jpg")  # 이미지를 가져옴
-        # lane_image = np.copy(image)  # 원본 이미지에 영향을 주지 않기 위해 copy 사용
+        frame = np.copy(frame1)  # 원본 이미지에 영향을 주지 않기 위해 copy 사용
         canny_image = canny(frame)
         cropped_image = region_of_interest(canny_image)
         lines = cv2.HoughLinesP(cropped_image,2,np.pi / 180,100,np.array([]),minLineLength=40,maxLineGap=5,)
