@@ -33,8 +33,8 @@ public class MainActivity extends AppCompatActivity
 
     private CameraBridgeViewBase mOpenCvCameraView;
 
-    public native void ConvertRGBtoGray(long matAddrInput, long matAddrResult,int th1,int th2);
-
+    public native void Canny(long matAddrInput, long matAddrResult,int th1,int th2);
+    public native void Interestedregion(long matAddrInput,long matAddrResult);
 
     static {
         System.loadLibrary("opencv_java4");
@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity
 
             matResult = new Mat(matInput.rows(), matInput.cols(), matInput.type());
 
-        ConvertRGBtoGray(matInput.getNativeObjAddr(), matResult.getNativeObjAddr(),50,150);
+        Canny(matInput.getNativeObjAddr(), matResult.getNativeObjAddr(),50,150);
 
         return matResult;
     }
