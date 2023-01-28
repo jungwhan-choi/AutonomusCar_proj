@@ -22,6 +22,9 @@ import org.opencv.android.Utils;
 import org.opencv.core.Mat;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
+
 import android.Manifest;
 public class MainActivity extends CameraActivity {
     CameraBridgeViewBase cameraBridgeViewBase;
@@ -50,13 +53,23 @@ public class MainActivity extends CameraActivity {
                 return null;
             }//안드로이드 카메라에서 프레임이 들어오는 부분.
         });
-
+        if(OpenCVLoader.initDebug()){
+            cameraBridgeViewBase.enableView();
+        }
     }
+
+    @Override
+    protected List<? extends CameraBridgeViewBase> getCameraViewList() {
+        return Collections.singletonList(cameraBridgeViewBase);
+    }
+
     void getPermission(){
         if(checkSelfPermission(Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED){
             requestPermissions(new String[]{Manifest.permission.CAMERA},101);
         }
     }
+
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
