@@ -1,0 +1,2 @@
+ninja: Entering directory `C:\Users\zad34\Documents\GitHub\AutonomusCar_proj\camwra\sdk\.cxx\Debug\525l5bf2\arm64-v8a'
+ninja: no work to do.

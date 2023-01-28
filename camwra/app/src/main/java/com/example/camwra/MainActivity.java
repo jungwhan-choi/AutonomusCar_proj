@@ -30,9 +30,10 @@ public class MainActivity extends AppCompatActivity
     private Mat matInput;
     private Mat matResult;
 
+
     private CameraBridgeViewBase mOpenCvCameraView;
 
-    public native void ConvertRGBtoGray(long matAddrInput, long matAddrResult);
+    public native void ConvertRGBtoGray(long matAddrInput, long matAddrResult,int th1,int th2);
 
 
     static {
@@ -125,7 +126,7 @@ public class MainActivity extends AppCompatActivity
 
             matResult = new Mat(matInput.rows(), matInput.cols(), matInput.type());
 
-        ConvertRGBtoGray(matInput.getNativeObjAddr(), matResult.getNativeObjAddr());
+        ConvertRGBtoGray(matInput.getNativeObjAddr(), matResult.getNativeObjAddr(),50,150);
 
         return matResult;
     }
