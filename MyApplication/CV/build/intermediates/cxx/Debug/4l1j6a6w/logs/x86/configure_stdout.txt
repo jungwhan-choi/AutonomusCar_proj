@@ -1,7 +1,0 @@
--- Detecting C compiler ABI info
--- Detecting C compiler ABI info - failed
--- Check for working C compiler: C:/Users/zad34/AppData/Local/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/windows-x86_64/bin/clang.exe
--- Check for working C compiler: C:/Users/zad34/AppData/Local/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/windows-x86_64/bin/clang.exe - broken
--- Configuring incomplete, errors occurred!
-See also "C:/Users/zad34/Documents/GitHub/AutonomusCar_proj/MyApplication/CV/.cxx/Debug/4l1j6a6w/x86/CMakeFiles/CMakeOutput.log".
-See also "C:/Users/zad34/Documents/GitHub/AutonomusCar_proj/MyApplication/CV/.cxx/Debug/4l1j6a6w/x86/CMakeFiles/CMakeError.log".
