@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.annotation.TargetApi;
 import android.content.pm.PackageManager;
@@ -15,12 +16,19 @@ import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
+import org.opencv.android.Utils;
 import org.opencv.core.Mat;
+import org.opencv.imgproc.Imgproc;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.Collections;
 import java.util.List;
 
 import static android.Manifest.permission.CAMERA;
+
+import com.chaquo.python.PyObject;
+import com.chaquo.python.Python;
 
 
 public class MainActivity extends AppCompatActivity
@@ -34,7 +42,8 @@ public class MainActivity extends AppCompatActivity
     private CameraBridgeViewBase mOpenCvCameraView;
 
     public native void Canny(long matAddrInput, long matAddrResult,int th1,int th2);
-    public native void Interestedregion(long matAddrInput,long matAddrResult);
+
+    
 
     static {
         System.loadLibrary("opencv_java4");
@@ -121,6 +130,14 @@ public class MainActivity extends AppCompatActivity
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
 
         matInput = inputFrame.rgba();
+        /*ByteArrayOutputStream byteArrayOutputStream=new ByteArrayOutputStream();
+        Bitmap bmp=Bitmap.createBitmap(matInput.cols(),matInput.rows(),Bitmap.Config.RGB_565);
+        Utils.matToBitmap(matInput,bmp,true);
+        bmp.compress(Bitmap.CompressFormat.PNG,100,byteArrayOutputStream);
+        byte[] bytes=byteArrayOutputStream.toByteArray();
+        PyObject pyobj=py.getModule("video").callAttr("canny", bytes);
+        matResult=pyobj;
+        */
 
         if ( matResult == null )
 

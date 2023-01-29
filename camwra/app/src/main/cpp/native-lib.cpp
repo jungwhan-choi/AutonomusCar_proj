@@ -13,12 +13,8 @@ Java_com_example_camwra_MainActivity_Canny(JNIEnv *env, jobject thiz,
     cvtColor(matInput, matResult, COLOR_RGBA2GRAY);
     blur(matInput,matResult,Size(5,5));
     Canny(matInput,matResult,th1,th2);
+
 }
 
 
-extern "C"
-JNIEXPORT void JNICALL
-Java_com_example_camwra_MainActivity_Interestedregion(JNIEnv *env, jobject thiz,
-                                                      jlong mat_addr_input, jlong mat_addr_result) {
-    // TODO: implement Interestedregion()
-}
+
