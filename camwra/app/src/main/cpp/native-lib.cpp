@@ -26,5 +26,7 @@ JNIEXPORT void JNICALL
 Java_com_example_camwra_MainActivity_ROI(JNIEnv *env, jobject thiz,
                                                       jlong mat_addr_input, jlong mat_addr_result) {
     Mat &matInput = *(Mat *)mat_addr_input;
-    Mat &matResult = *(Mat *)mat_addr_result;
+    Mat &ROI = *(Mat *)mat_addr_result;
+    Rect r(10,10,100,100);
+    Mat D=matInput(r);
 }

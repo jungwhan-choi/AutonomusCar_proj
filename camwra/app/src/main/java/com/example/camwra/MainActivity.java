@@ -16,6 +16,7 @@ import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Mat;
+import org.opencv.core.Rect;
 import org.opencv.imgproc.Imgproc;
 
 import java.util.Collections;
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity
     private static final String TAG = "opencv";
     private Mat matInput;
     private Mat matResult;
-
+    private  Mat ROI;
 
     private CameraBridgeViewBase mOpenCvCameraView;
 
@@ -127,8 +128,9 @@ public class MainActivity extends AppCompatActivity
 
             matResult = new Mat(matInput.rows(), matInput.cols(), matInput.type());
 
-        Canny(matInput.getNativeObjAddr(), matResult.getNativeObjAddr(),50,150);
-        ROI(matInput.getNativeObjAddr(),matResult.getNativeObjAddr());
+
+        ROI(matInput.getNativeObjAddr(),ROI.getNativeObjAddr());
+        Canny(ROI.getNativeObjAddr(), matResult.getNativeObjAddr(),50,150);
 
 
         return matResult;
